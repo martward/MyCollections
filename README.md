@@ -12,9 +12,9 @@ he/she chose as relevant when creating the database.
 The data will be stored in a SQL database. 
 There will be six activities:
   - Home_Activity:	Here the user can choose or add a collection/database
-  - Collection_Activity: 		Here the user can chooser or add an object
-  - Object_Activity:		Here the user can see or choose to edit an object
-  - EditObject_Activity:		Here the user can edit an object
+  - Collection_Activity: 		Here the user can choose or add an Item
+  - Item_Activity:		Here the user can see or choose to edit an Item
+  - EditItem_Activity:		Here the user can edit an object
   - CreateDatabase_Activity:	Here the user can create a new database
   - AddObject_Activity:		Here the user can add a object to a database
 
