@@ -11,12 +11,12 @@ he/she chose as relevant when creating the database.
 
 The data will be stored in a SQL database. 
 There will be six activities:
-  - Home			Here the user can choose or add a collection/database
-  - Collection 		Here the user can chooser or add an object
-  - Object		Here the user can see or choose to edit an object
-  - EditObject		Here the user can edit an object
-  - CreateDatabase	Here the user can create a new database
-  - AddObject		Here the user can add a object to a database
+  - Home_Activity:	Here the user can choose or add a collection/database
+  - Collection_Activity: 		Here the user can chooser or add an object
+  - Object_Activity:		Here the user can see or choose to edit an object
+  - EditObject_Activity:		Here the user can edit an object
+  - CreateDatabase_Activity:	Here the user can create a new database
+  - AddObject_Activity:		Here the user can add a object to a database
 
 
 Features:
@@ -27,7 +27,7 @@ Features:
 
 Optional features:
   - Export .CSV to Google Drive / SD card / Dropbox
-  - Field can be declared as a choice menu
+  - Field can be declared as a choice menu (so the user can choose between pre defined values)
   - User can find an object by name
   - User can find list of object which satisfy a certain criteria
   - User can choose to sort objects by a certain feature
