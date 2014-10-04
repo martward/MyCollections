@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyCollections</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">My Collections</string>
+    <string name="create_collection_button_home">Create new Collection</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_collection_">Collection</string>
-    <string name="title_activity_item_">Item</string>
-    <string name="title_activity_edit__item_">Edit Item</string>
     <string name="title_activity_create__collection_">Create Collection</string>
-    <string name="title_activity_add__item_">Add Item</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="enterAttribute"> Please enter an attribute name, and the type of attribute.</string>
+    <string name="button_collection_next">Next</string>
+    <string name="button_collection_finish">finish</string>
+    <string name="editTextHint">Name</string>
+    <string-array name="data_array">
+        <item>Text</item>
+        <item>Number</item>
+        <item>Date</item>
+    </string-array>
 
 </resources>
