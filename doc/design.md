@@ -35,15 +35,17 @@ Optional features:
 
 Home screen:
 
-
+![oms](https://github.com/martward/MyCollections/raw/master/doc/Activity_Home.png)
 
 Creating a collection:
 
-
+![oms](https://github.com/martward/MyCollections/raw/master/doc/Activity_Create_Collection.png)
 
 Showing the items of a collection:
 
-
+![oms](https://github.com/martward/MyCollections/raw/master/doc/Activity_Collection.png)
 
 Adding, showing and editing an item will have very similar layouts, only the
 editText fields (adding / editing) and TextViews (showing) will be different.
+
+![oms](https://github.com/martward/MyCollections/raw/master/doc/Activity_Add_Item.png)
