@@ -14,9 +14,9 @@ There will be six activities:
   - Home_Activity:	Here the user can choose or add a collection/database
   - Collection_Activity: 		Here the user can choose or add an Item
   - Item_Activity:		Here the user can see or choose to edit an Item
-  - EditItem_Activity:		Here the user can edit an object
-  - CreateDatabase_Activity:	Here the user can create a new database
-  - AddObject_Activity:		Here the user can add a object to a database
+  - Edit_Item_Activity:		Here the user can edit an object
+  - Create_Collection_Activity:	Here the user can create a new database
+  - Add_Item_Activity:		Here the user can add an item to a database
 
 
 Features:

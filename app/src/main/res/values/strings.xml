@@ -10,10 +10,14 @@
     <string name="button_collection_next">Next</string>
     <string name="button_collection_finish">finish</string>
     <string name="editTextHint">Name</string>
+
     <string-array name="data_array">
         <item>Text</item>
         <item>Number</item>
         <item>Date</item>
     </string-array>
+
+    <string name="title_activity_create__item_">Create_Item_Activity</string>
+    <string name="title_activity_collection_">Collection_Activity</string>
 
 </resources>

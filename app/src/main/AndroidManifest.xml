@@ -20,6 +20,14 @@
             android:name=".Create_Collection_Activity"
             android:label="@string/title_activity_create__collection_" >
         </activity>
+        <activity
+            android:name=".Create_Item_Activity"
+            android:label="@string/title_activity_create__item_" >
+        </activity>
+        <activity
+            android:name=".Collection_Activity"
+            android:label="@string/title_activity_collection_" >
+        </activity>
     </application>
 
 </manifest>
