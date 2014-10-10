@@ -40,16 +40,16 @@ public class Home_Activity extends ActionBarActivity {
         GridView homeView = (GridView)findViewById(R.id.homeView);
         context = homeView.getContext();
         homeView.setAdapter(new Home_Adapter(db_prefs, context));
-
+        /*
         // create the button to create a new collection
         Button button = (Button)findViewById(R.id.newCollectionButton);
         button.setOnClickListener(buttonClick);
-
+        */
     }
+/*
 
-    /*
     Handles the button to create a new collection.
-     */
+
     private View.OnClickListener buttonClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -57,7 +57,7 @@ public class Home_Activity extends ActionBarActivity {
             startActivity(createCollection);
         }
     };
-
+*/
     private AdapterView.OnItemClickListener respondToClick = new AdapterView.OnItemClickListener(){
 
         @Override
@@ -83,6 +83,10 @@ public class Home_Activity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_add){
+            Intent createCollection = new Intent(context, Create_Collection_Activity.class);
+            startActivity(createCollection);
         }
         return super.onOptionsItemSelected(item);
     }
