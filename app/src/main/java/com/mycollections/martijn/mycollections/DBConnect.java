@@ -68,6 +68,6 @@ public class DBConnect extends SQLiteOpenHelper {
     public String get_feature(String feature){
         String str = "";
         return str;
-    }   
+    }
 
 }

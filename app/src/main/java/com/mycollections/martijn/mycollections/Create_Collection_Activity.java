@@ -68,12 +68,9 @@ public class Create_Collection_Activity extends ActionBarActivity {
         spinner.setOnItemSelectedListener(new SpinnerActivity());
 
         // making the EditText field accessible throughout the class
-       editText = (EditText)findViewById(R.id.editTextCreateCollection);
+        editText = (EditText)findViewById(R.id.editTextCreateCollection);
 
-
-        /*
-        The buttons are given an OnClickListener
-         */
+        // The buttons are given an OnClickListener
         Button finish = (Button)findViewById(R.id.buttonFinishCollection);
         Button next = (Button)findViewById(R.id.buttonNextAttribute);
         finish.setOnClickListener(buttonClick);
@@ -122,38 +119,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
             String attrName = editText.getText().toString();
             switch(view.getId()){
                 case R.id.buttonFinishCollection:
-                    // NEED TO MAKE LATER
-                    attributes.add(attrName);
-                    attributes.add(attrStyle);
-                    System.out.println("Now saving the database");
-                    DBConnect db = new DBConnect(context, collectionName);
-                    String allAttributes = "";
-                    for(String s:attributes){
-                        allAttributes += s;
-                        allAttributes+= ",";
-                    }
-                    System.out.println(allAttributes);
-                    allAttributes = allAttributes.substring(0,allAttributes.length()-1);
-                    System.out.println(allAttributes);
-                    db.create_table(allAttributes);
-
-                    SharedPreferences pref = getSharedPreferences("DB", MODE_PRIVATE);
-                    SharedPreferences.Editor edit = pref.edit();
-                    int numC = pref.getInt("numCollections", 0);
-                    numC += 1;
-                    edit.putInt("numCollections", numC);
-
-                    String collections = pref.getString("collections","");
-                    if(collections.length() > 0) {
-                        collections = collections + ",";
-                    }
-                    collections = collections + collectionName;
-                    edit.putString("collections", collections);
-
-                    edit.commit();
-
-                    Intent homeIntent = new Intent(context, Home_Activity.class);
-                    startActivity(homeIntent);
+                    create_collection(attrName);
                     break;
                 case R.id.buttonNextAttribute:
                     if(first){
@@ -188,4 +154,50 @@ public class Create_Collection_Activity extends ActionBarActivity {
             }
         }
     };
+
+    private void create_collection(String attrName){
+        // updating features
+        attributes.add(attrName);
+        attributes.add(attrStyle);
+
+        // open db
+        DBConnect db = new DBConnect(context, collectionName);
+        String allAttributes = "";
+        for(String s:attributes){
+            allAttributes += s;
+            allAttributes+= ",";
+        }
+        // make sure format is ok
+        allAttributes = allAttributes.substring(0,allAttributes.length()-1);
+        db.create_table(allAttributes);
+
+        // add 1 to number of collections in sharedPreferences
+        SharedPreferences pref = getSharedPreferences("DB", MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        int numC = pref.getInt("numCollections", 0);
+        numC += 1;
+        edit.putInt("numCollections", numC);
+
+
+        // add name of collection to list of collections
+        String collections = pref.getString("collections","");
+        if(collections.length() > 0) {
+            collections = collections + ",";
+        }
+        collections = collections + collectionName;
+        edit.putString("collections", collections);
+
+        edit.commit();
+
+        // create a new sharedpreferences with information features of the collection
+        SharedPreferences newPrefs = getSharedPreferences(collectionName, MODE_PRIVATE);
+        SharedPreferences.Editor editor = newPrefs.edit();
+        editor.putString("features", allAttributes);
+        editor.commit();
+
+        // go back to home menu
+        Intent homeIntent = new Intent(context, Home_Activity.class);
+        startActivity(homeIntent);
+        finish();
+    }
 }

@@ -19,6 +19,7 @@ public class Home_Activity extends ActionBarActivity {
     private static Context context;
     private static int numCollections;
     private static String collections;
+    private static Home_Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,6 @@ public class Home_Activity extends ActionBarActivity {
         if(!db_prefs.contains("numCollections")){
             // if not, create SharedPreferences with database name and number of collections = 0
             SharedPreferences.Editor editor = db_prefs.edit();
-            //editor.putString("databaseName", "MyDatabase");
             editor.putInt("numCollections", 0);
             editor.putString("collections", "");
             numCollections = 0;
@@ -46,19 +46,10 @@ public class Home_Activity extends ActionBarActivity {
         homeView.setVerticalSpacing(15);
         homeView.setHorizontalSpacing(10);
         context = homeView.getContext();
-        homeView.setAdapter(new Home_Adapter(db_prefs, context));
-
+        adapter = new Home_Adapter(db_prefs, context);
+        homeView.setAdapter(adapter);
+        homeView.setOnItemClickListener(respondToClick);
     }
-
-    private AdapterView.OnItemClickListener respondToClick = new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if(numCollections != 0){
-                // open the selected collection
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,4 +73,16 @@ public class Home_Activity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public AdapterView.OnItemClickListener respondToClick = new AdapterView.OnItemClickListener(){
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            String db = (String)adapter.getItem(i);
+            System.out.println(db);
+            Intent collectionIntent = new Intent(context, Collection_Activity.class);
+            collectionIntent.putExtra("NAME", db);
+            startActivity(collectionIntent);
+        }
+    };
 }

@@ -37,7 +37,7 @@ public class Home_Adapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return allCollections[i];
     }
 
     @Override
