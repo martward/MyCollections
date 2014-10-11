@@ -3,6 +3,7 @@ package com.mycollections.martijn.mycollections;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -122,7 +123,37 @@ public class Create_Collection_Activity extends ActionBarActivity {
             switch(view.getId()){
                 case R.id.buttonFinishCollection:
                     // NEED TO MAKE LATER
+                    attributes.add(attrName);
+                    attributes.add(attrStyle);
                     System.out.println("Now saving the database");
+                    DBConnect db = new DBConnect(context, collectionName);
+                    String allAttributes = "";
+                    for(String s:attributes){
+                        allAttributes += s;
+                        allAttributes+= ",";
+                    }
+                    System.out.println(allAttributes);
+                    allAttributes = allAttributes.substring(0,allAttributes.length()-1);
+                    System.out.println(allAttributes);
+                    db.create_table(allAttributes);
+
+                    SharedPreferences pref = getSharedPreferences("DB", MODE_PRIVATE);
+                    SharedPreferences.Editor edit = pref.edit();
+                    int numC = pref.getInt("numCollections", 0);
+                    numC += 1;
+                    edit.putInt("numCollections", numC);
+
+                    String collections = pref.getString("collections","");
+                    if(collections.length() > 0) {
+                        collections = collections + ",";
+                    }
+                    collections = collections + collectionName;
+                    edit.putString("collections", collections);
+
+                    edit.commit();
+
+                    Intent homeIntent = new Intent(context, Home_Activity.class);
+                    startActivity(homeIntent);
                     break;
                 case R.id.buttonNextAttribute:
                     if(first){

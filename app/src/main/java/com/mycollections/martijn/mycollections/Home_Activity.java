@@ -3,6 +3,7 @@ package com.mycollections.martijn.mycollections;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ public class Home_Activity extends ActionBarActivity {
 
     private static Context context;
     private static int numCollections;
+    private static String collections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,39 +27,29 @@ public class Home_Activity extends ActionBarActivity {
 
         SharedPreferences db_prefs = getSharedPreferences("DB", MODE_PRIVATE);
         // check if first time the app is opened
-        if(!db_prefs.contains("databaseName")){
+        if(!db_prefs.contains("numCollections")){
             // if not, create SharedPreferences with database name and number of collections = 0
             SharedPreferences.Editor editor = db_prefs.edit();
-            editor.putString("databaseName", "MyDatabase");
+            //editor.putString("databaseName", "MyDatabase");
             editor.putInt("numCollections", 0);
+            editor.putString("collections", "");
             numCollections = 0;
             editor.commit();
         }else{
             numCollections = db_prefs.getInt("numCollections",0);
+            collections = db_prefs.getString("collections", "");
         }
 
         // create a GridView which will show the collections
         GridView homeView = (GridView)findViewById(R.id.homeView);
+        //homeView.setBackgroundColor(Color.BLACK);
+        homeView.setVerticalSpacing(15);
+        homeView.setHorizontalSpacing(10);
         context = homeView.getContext();
         homeView.setAdapter(new Home_Adapter(db_prefs, context));
-        /*
-        // create the button to create a new collection
-        Button button = (Button)findViewById(R.id.newCollectionButton);
-        button.setOnClickListener(buttonClick);
-        */
+
     }
-/*
 
-    Handles the button to create a new collection.
-
-    private View.OnClickListener buttonClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent createCollection = new Intent(context, Create_Collection_Activity.class);
-            startActivity(createCollection);
-        }
-    };
-*/
     private AdapterView.OnItemClickListener respondToClick = new AdapterView.OnItemClickListener(){
 
         @Override
