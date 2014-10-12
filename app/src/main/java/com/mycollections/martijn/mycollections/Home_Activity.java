@@ -64,10 +64,8 @@ public class Home_Activity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.action_add){
+
+        if (id == R.id.action_add_collection){
             Intent createCollection = new Intent(context, Create_Collection_Activity.class);
             startActivity(createCollection);
         }
@@ -79,9 +77,8 @@ public class Home_Activity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             String db = (String)adapter.getItem(i);
-            System.out.println(db);
             Intent collectionIntent = new Intent(context, Collection_Activity.class);
-            collectionIntent.putExtra("NAME", db);
+            collectionIntent.putExtra("collectionName", db);
             startActivity(collectionIntent);
         }
     };

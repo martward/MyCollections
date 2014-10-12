@@ -1,9 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.mycollections.martijn.mycollections.Create_Item_Activity" >
+    tools:context="com.mycollections.martijn.mycollections.Collection_Activity" >
+    <!--
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
+-->
+    <item android:id="@+id/action_add_item"
+        android:title="add"
+        android:icon = "@drawable/ic_action_new"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
 </menu>

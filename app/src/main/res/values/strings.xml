@@ -14,10 +14,11 @@
     <string-array name="data_array">
         <item>Text</item>
         <item>Number</item>
-        <item>Date</item>
     </string-array>
 
     <string name="title_activity_create__item_">Create_Item_Activity</string>
     <string name="title_activity_collection_">Collection_Activity</string>
+    <string name="title_activity_add__item_">Add_Item_Activity</string>
+    <string name="title_activity_item_">Item_Activity</string>
 
 </resources>

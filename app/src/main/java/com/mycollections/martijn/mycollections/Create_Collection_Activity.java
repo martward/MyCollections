@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+
+import javax.xml.datatype.Duration;
 
 
 public class Create_Collection_Activity extends ActionBarActivity {
@@ -45,6 +46,9 @@ public class Create_Collection_Activity extends ActionBarActivity {
             spinner.setVisibility(View.GONE);
             // initialize attributes ArrayList
             attributes = new ArrayList<String>();
+            attributes.add("Name");
+            attributes.add("Text");
+            show_toast("Collection created, name feature added.");
             // used in the OnClickListener
             first = true;
         } else {
@@ -84,21 +88,10 @@ public class Create_Collection_Activity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.create_collection_, menu);
+        getMenuInflater().inflate(R.menu.create_collection, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     /*
     Handles input from the spinner to set the type of data.
@@ -117,26 +110,28 @@ public class Create_Collection_Activity extends ActionBarActivity {
         @Override
         public void onClick(View view) {
             String attrName = editText.getText().toString();
-            switch(view.getId()){
+            switch (view.getId()) {
                 case R.id.buttonFinishCollection:
                     create_collection(attrName);
                     break;
                 case R.id.buttonNextAttribute:
-                    if(first){
+                    if (first) {
                         // only a name is entered, only proceed when the name is at least one
                         // character long
-                        if(attrName.length() > 0) {
+                        if (attrName.length() > 0 && !attrName.equalsIgnoreCase("name")) {
                             Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
                             nextAttribute.putExtra("collectionName", attrName);
                             nextAttribute.putStringArrayListExtra("attributes", attributes);
                             startActivity(nextAttribute);
                             finish();
-                        }else{
-                            Toast toast = Toast.makeText(context, "Please enter a name",Toast.LENGTH_SHORT);
+                        }else if(attrName.length() > 0 && attrName.equalsIgnoreCase("name")) {
+                            show_toast("Name feature is already added.");
+                        }else {
+                            Toast toast = Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                    }else{
-                        if(attrName.length() > 0 && attrStyle != null) {
+                    } else {
+                        if (attrName.length() > 0 && attrStyle != null) {
                             // add name and type to attributes list before starting new intent
                             attributes.add(attrName);
                             attributes.add(attrStyle);
@@ -145,9 +140,8 @@ public class Create_Collection_Activity extends ActionBarActivity {
                             nextAttribute.putStringArrayListExtra("attributes", attributes);
                             startActivity(nextAttribute);
                             finish();
-                        }
-                        else{
-                            Toast toast = Toast.makeText(context, "Please enter a name and a type",Toast.LENGTH_SHORT);
+                        } else {
+                            Toast toast = Toast.makeText(context, "Please enter a name and a type", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }
@@ -160,8 +154,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
         attributes.add(attrName);
         attributes.add(attrStyle);
 
-        // open db
-        DBConnect db = new DBConnect(context, collectionName);
+
         String allAttributes = "";
         for(String s:attributes){
             allAttributes += s;
@@ -169,7 +162,10 @@ public class Create_Collection_Activity extends ActionBarActivity {
         }
         // make sure format is ok
         allAttributes = allAttributes.substring(0,allAttributes.length()-1);
+        // open db
+        DBConnect db = new DBConnect(context, collectionName);
         db.create_table(allAttributes);
+        db.close();
 
         // add 1 to number of collections in sharedPreferences
         SharedPreferences pref = getSharedPreferences("DB", MODE_PRIVATE);
@@ -192,6 +188,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
         // create a new sharedpreferences with information features of the collection
         SharedPreferences newPrefs = getSharedPreferences(collectionName, MODE_PRIVATE);
         SharedPreferences.Editor editor = newPrefs.edit();
+        System.out.println(allAttributes);
         editor.putString("features", allAttributes);
         editor.commit();
 
@@ -199,5 +196,10 @@ public class Create_Collection_Activity extends ActionBarActivity {
         Intent homeIntent = new Intent(context, Home_Activity.class);
         startActivity(homeIntent);
         finish();
+    }
+
+    private void show_toast(CharSequence text){
+        Toast toast = Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
