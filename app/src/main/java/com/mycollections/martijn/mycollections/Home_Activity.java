@@ -1,6 +1,8 @@
 package com.mycollections.martijn.mycollections;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -45,10 +47,12 @@ public class Home_Activity extends ActionBarActivity {
         //homeView.setBackgroundColor(Color.BLACK);
         homeView.setVerticalSpacing(15);
         homeView.setHorizontalSpacing(10);
+
         context = homeView.getContext();
-        adapter = new Home_Adapter(db_prefs, context);
+        adapter = new Home_Adapter(db_prefs, context, homeView.getWidth());
         homeView.setAdapter(adapter);
         homeView.setOnItemClickListener(respondToClick);
+        homeView.setOnItemLongClickListener(respondToHold);
     }
 
     @Override
@@ -80,6 +84,15 @@ public class Home_Activity extends ActionBarActivity {
             Intent collectionIntent = new Intent(context, Collection_Activity.class);
             collectionIntent.putExtra("collectionName", db);
             startActivity(collectionIntent);
+        }
+    };
+
+    public AdapterView.OnItemLongClickListener respondToHold = new AdapterView.OnItemLongClickListener(){
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            System.out.println("Long Pressed");
+            return true;
         }
     };
 }

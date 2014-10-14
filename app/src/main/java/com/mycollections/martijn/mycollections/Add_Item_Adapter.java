@@ -2,26 +2,14 @@ package com.mycollections.martijn.mycollections;
 
 import android.content.Context;
 import android.text.InputType;
-import android.text.method.DateKeyListener;
 import android.text.method.DigitsKeyListener;
-import android.text.method.KeyListener;
-import android.text.method.TextKeyListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.security.Key;
 import java.util.ArrayList;
 
-import static android.text.method.TextKeyListener.Capitalize.NONE;
-
-/**
- * Created by Martijn on 10/12/2014.
- */
 public class Add_Item_Adapter extends BaseAdapter {
 
     private static Context context;
@@ -41,14 +29,10 @@ public class Add_Item_Adapter extends BaseAdapter {
             text.setId(i);
             System.out.println(features[i-1]);
             if(features[i].equalsIgnoreCase("number")){
-                System.out.println("number");
                 text.setKeyListener(new DigitsKeyListener());
-            }else if (features[i].equalsIgnoreCase("date")) {
-                System.out.println("date");
-                text.setKeyListener(new DateKeyListener());
             } else{
-                System.out.println("text");
                 text.setSingleLine();
+                text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             }
             edit.add(text);
         }
@@ -74,7 +58,12 @@ public class Add_Item_Adapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(i % 2 == 0){
             TextView featureName = new TextView(context);
-            featureName.setText(features[i]);
+            if(features[i].contains("_")){
+                String name = features[i].replace("_", " ");
+                featureName.setText(name);
+            }else{
+                featureName.setText(features[i]);
+            }
             featureName.setTextSize(22);
             return featureName;
         } else{

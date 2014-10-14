@@ -46,8 +46,9 @@ public class Collection_Activity extends ActionBarActivity {
 
         adapter = new Collection_Adapter(context, allItems);
         itemsView.setAdapter(adapter);
-
-        itemsView.setOnItemClickListener(respondToClick);
+        if(allItems.size() > 0) {
+            itemsView.setOnItemClickListener(respondToClick);
+        }
     }
 
 

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -51,12 +52,32 @@ public class Collection_Adapter extends BaseAdapter {
             noItems.setPadding(10,10,10,10);
             return noItems;
         }else {
+            LinearLayout li = new LinearLayout(context);
+
+            TextView letter = new TextView(context);
+            letter.setTextSize(48);
+            String substring = items.get(i).substring(0, 1);
+            letter.setText(substring.toUpperCase());
+            letter.setTextColor(Color.RED);
+            letter.setBackgroundColor(Color.rgb(153,217,234));
+            letter.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.FILL_PARENT, (float) 1.0));
+            letter.setGravity(1);
+
             TextView item = new TextView(context);
             item.setText(items.get(i));
             item.setTextSize(30);
             item.setBackgroundColor(Color.WHITE);
-            item.setPadding(10,10,10,10);
-            return item;
+            item.setPadding(15, 20, 15, 15);
+            item.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.FILL_PARENT, (float) 0.25));
+
+            li.setOrientation(LinearLayout.HORIZONTAL);
+            li.setPadding(5, 5, 5, 10);
+
+            li.addView(letter);
+            li.addView(item);
+            return li;
         }
     }
 }

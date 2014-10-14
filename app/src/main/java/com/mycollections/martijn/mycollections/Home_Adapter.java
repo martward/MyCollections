@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -16,14 +19,16 @@ public class Home_Adapter extends BaseAdapter {
     private static int numCollections;
     private static String[] allCollections;
     private static Context context;
+    private static int width;
 
-    Home_Adapter(SharedPreferences prefs, Context con){
+    Home_Adapter(SharedPreferences prefs, Context con, int w){
         numCollections = prefs.getInt("numCollections", 0);
         if(numCollections > 0) {
             String collections = prefs.getString("collections", "");
             allCollections = collections.split(",");
         }
         context = con;
+        width = w;
     }
 
     @Override
@@ -53,13 +58,41 @@ public class Home_Adapter extends BaseAdapter {
             noCollections.setTextSize(30);
             return noCollections;
         }else {
-            // NEED TO MAKE LATER
+            LinearLayout li = new LinearLayout(context);
+
+
+            TextView letter = new TextView(context);
+            letter.setTextSize(48);
+            String substring = allCollections[i].substring(0, 1);
+            letter.setText(substring.toUpperCase());
+            letter.setTextColor(Color.RED);
+            letter.setBackgroundColor(Color.rgb(153,217,234));
+            letter.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.FILL_PARENT, (float) 1.0));
+            letter.setGravity(1);
+
+
             TextView someCollections = new TextView(context);
-            someCollections.setText(allCollections[i]);
-            someCollections.setPadding(10,10,10,10);
+            if (allCollections[i].contains("_")) {
+                String c = allCollections[i].replace("_", " ");
+                someCollections.setText(c);
+            } else {
+                someCollections.setText(allCollections[i]);
+            }
+            someCollections.setPadding(15, 20, 15, 15);
             someCollections.setTextSize(30);
             someCollections.setBackgroundColor(Color.WHITE);
-            return someCollections;
+            someCollections.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                    LinearLayout.LayoutParams.FILL_PARENT, (float) 0.25));
+
+
+            li.setOrientation(LinearLayout.HORIZONTAL);
+            li.setPadding(5, 5, 5, 10);
+
+            li.addView(letter);
+            li.addView(someCollections);
+
+            return li;
         }
     }
 }

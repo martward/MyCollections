@@ -119,6 +119,9 @@ public class Create_Collection_Activity extends ActionBarActivity {
                         // only a name is entered, only proceed when the name is at least one
                         // character long
                         if (attrName.length() > 0 && !attrName.equalsIgnoreCase("name")) {
+                            if(attrName.contains(" ")){
+                                attrName = attrName.replace(" ", "_");
+                            }
                             Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
                             nextAttribute.putExtra("collectionName", attrName);
                             nextAttribute.putStringArrayListExtra("attributes", attributes);
@@ -133,6 +136,11 @@ public class Create_Collection_Activity extends ActionBarActivity {
                     } else {
                         if (attrName.length() > 0 && attrStyle != null) {
                             // add name and type to attributes list before starting new intent
+                            System.out.println(attrName);
+                            if(attrName.contains(" ")){
+                                attrName = attrName.replace(" ", "_");
+                            }
+                            System.out.println(attrName);
                             attributes.add(attrName);
                             attributes.add(attrStyle);
                             Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
@@ -151,9 +159,13 @@ public class Create_Collection_Activity extends ActionBarActivity {
 
     private void create_collection(String attrName){
         // updating features
+        System.out.println(attrName);
+        if(attrName.contains(" ")){
+            attrName = attrName.replace(" ", "_");
+        }
+        System.out.println(attrName);
         attributes.add(attrName);
         attributes.add(attrStyle);
-
 
         String allAttributes = "";
         for(String s:attributes){
