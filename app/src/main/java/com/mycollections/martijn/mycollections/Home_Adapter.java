@@ -41,7 +41,7 @@ public class Home_Adapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public String getItem(int i) {
         return allCollections[i];
     }
 
@@ -73,8 +73,8 @@ public class Home_Adapter extends BaseAdapter {
 
 
             TextView someCollections = new TextView(context);
-            if (allCollections[i].contains("_")) {
-                String c = allCollections[i].replace("_", " ");
+            if (allCollections[i].contains("_spc")) {
+                String c = allCollections[i].replace("_spc", " ");
                 someCollections.setText(c);
             } else {
                 someCollections.setText(allCollections[i]);

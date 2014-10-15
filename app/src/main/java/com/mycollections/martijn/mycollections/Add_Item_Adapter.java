@@ -58,8 +58,8 @@ public class Add_Item_Adapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(i % 2 == 0){
             TextView featureName = new TextView(context);
-            if(features[i].contains("_")){
-                String name = features[i].replace("_", " ");
+            if(features[i].contains("_spc")){
+                String name = features[i].replace("_spc", " ");
                 featureName.setText(name);
             }else{
                 featureName.setText(features[i]);

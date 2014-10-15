@@ -91,7 +91,41 @@ public class Home_Activity extends ActionBarActivity {
 
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            System.out.println("Long Pressed");
+            final String db = adapter.getItem(i).replace("_spc", "");
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setTitle("Delete collection " + db);
+            builder1.setMessage("Ae you sure you wish to delete this collection?");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Delete collection
+                            context.deleteDatabase(db);
+                            // Delete SharedPreferences
+                            context.deleteFile(db + ".xml");
+                            // Delete from DB SharedPreferences & numCollections -=1
+                            SharedPreferences db_prefs = getSharedPreferences("DB", MODE_PRIVATE);
+                            numCollections -= 1;
+                            collections = collections.replace(db,"");
+                            SharedPreferences.Editor edit = db_prefs.edit();
+                            edit.putString("collections", collections);
+                            edit.putInt("numCollections", numCollections);
+                            edit.commit();
+                            // Restart home activity
+                            Intent restart = new Intent(context, Home_Activity.class);
+                            startActivity(restart);
+                            finish();
+                        }
+                    });
+            builder1.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
             return true;
         }
     };

@@ -1,6 +1,8 @@
 package com.mycollections.martijn.mycollections;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
@@ -33,21 +35,28 @@ public class Collection_Activity extends ActionBarActivity {
         SharedPreferences collectionPrefs = getSharedPreferences(collectionName, MODE_PRIVATE);
 
         TextView title = (TextView) findViewById(R.id.collectionTitle);
-        title.setText(collectionName);
+        String name;
+        if(collectionName.contains("_spc")){
+             name = collectionName.replace("_spc", " ");
+        }else{
+            name = collectionName;
+        }
+        title.setText(name);
 
         GridView itemsView = (GridView) findViewById(R.id.collectionItems);
         itemsView.setVerticalSpacing(15);
-        itemsView.setHorizontalSpacing(10);
+        itemsView.setHorizontalSpacing(5);
         context = itemsView.getContext();
 
         DBConnect db = new DBConnect(context, collectionName);
         allItems = db.get_items();
         db.close();
 
-        adapter = new Collection_Adapter(context, allItems);
+        adapter = new Collection_Adapter(context, allItems, collectionName);
         itemsView.setAdapter(adapter);
         if(allItems.size() > 0) {
             itemsView.setOnItemClickListener(respondToClick);
+            itemsView.setOnItemLongClickListener(respondToHold);
         }
     }
 
@@ -83,6 +92,42 @@ public class Collection_Activity extends ActionBarActivity {
             itemIntent.putExtra("collectionName", collectionName);
             itemIntent.putExtra("item", item);
             startActivity(itemIntent);
+        }
+    };
+
+    public AdapterView.OnItemLongClickListener respondToHold = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            final String item = adapter.getItem(i).replace("_spc", "");
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+            builder1.setTitle("Delete " + item);
+            builder1.setMessage("Ae you sure you wish to delete this item?");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // Delete item from db
+                            DBConnect db = new DBConnect(context, collectionName);
+                            db.delete_item(item);
+                            db.close();
+                            // Restart activity
+                            Intent collectionIntent = new Intent(context, Collection_Activity.class);
+                            collectionIntent.putExtra("collectionName", collectionName);
+                            startActivity(collectionIntent);
+                            finish();
+                        }
+                    });
+            builder1.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+            return true;
         }
     };
 }

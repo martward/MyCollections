@@ -120,7 +120,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
                         // character long
                         if (attrName.length() > 0 && !attrName.equalsIgnoreCase("name")) {
                             if(attrName.contains(" ")){
-                                attrName = attrName.replace(" ", "_");
+                                attrName = attrName.replace(" ", "_spc");
                             }
                             Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
                             nextAttribute.putExtra("collectionName", attrName);
@@ -136,11 +136,9 @@ public class Create_Collection_Activity extends ActionBarActivity {
                     } else {
                         if (attrName.length() > 0 && attrStyle != null) {
                             // add name and type to attributes list before starting new intent
-                            System.out.println(attrName);
                             if(attrName.contains(" ")){
-                                attrName = attrName.replace(" ", "_");
+                                attrName = attrName.replace(" ", "_spc");
                             }
-                            System.out.println(attrName);
                             attributes.add(attrName);
                             attributes.add(attrStyle);
                             Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
@@ -159,11 +157,9 @@ public class Create_Collection_Activity extends ActionBarActivity {
 
     private void create_collection(String attrName){
         // updating features
-        System.out.println(attrName);
         if(attrName.contains(" ")){
-            attrName = attrName.replace(" ", "_");
+            attrName = attrName.replace(" ", "_spc");
         }
-        System.out.println(attrName);
         attributes.add(attrName);
         attributes.add(attrStyle);
 

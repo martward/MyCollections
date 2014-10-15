@@ -72,7 +72,6 @@ public class DBConnect extends SQLiteOpenHelper {
         String[] features = new String[featuresAndValues.length/2];
         String[] values = new String[featuresAndValues.length/2];
         for(int i=0; i<featuresAndValues.length; i+=2){
-            System.out.println(i);
             if(i == 0) {
                 features[i] = featuresAndValues[i];
                 values[i] = featuresAndValues[i + 1];
@@ -97,8 +96,6 @@ public class DBConnect extends SQLiteOpenHelper {
         }
         query = query + ");";
 
-        System.out.println(query);
-
         db.execSQL(query);
     }
 
@@ -117,6 +114,11 @@ public class DBConnect extends SQLiteOpenHelper {
             }
         }
         return values;
+    }
+
+    public void delete_item(String item){
+        String query = "DELETE FROM " + tableName + " WHERE Name = '" + item + "'";
+        db.execSQL(query);
     }
 
 }
