@@ -1,6 +1,7 @@
 package com.mycollections.martijn.mycollections;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,18 +16,22 @@ import java.util.ArrayList;
 public class Item_Adapter extends BaseAdapter {
 
     private static int numFeatures;
-    private static ArrayList<String> values;
+    private static String[] values;
     private static Context context;
+    private static String[] features;
 
-    Item_Adapter(Context c, ArrayList<String> v){
+    Item_Adapter(Context c, ArrayList<String> v, String[] f){
         numFeatures = v.size();
-        values = v;
+        System.out.println(v.size());
+        values = v.toArray(new String[v.size()]);
         context = c;
+        features = f;
+        System.out.println(f.length);
     }
 
     @Override
     public int getCount() {
-        return numFeatures-1;
+        return (numFeatures * 2) -2;
     }
 
     @Override
@@ -41,9 +46,26 @@ public class Item_Adapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        TextView feature = new TextView(context);
-        feature.setText(values.get(i+1));
-        feature.setTextSize(24);
-        return feature;
+        TextView v = new TextView(context);
+        i = i+2;
+        if(i%2 == 0){
+            // feature
+            String feature;
+            if(features[i/2].contains("_spc")){
+                feature = features[i/2].replace("_spc", " ");
+            }else {
+                feature = features[i/2];
+            }
+            v.setText(feature);
+            v.setTextSize(28);
+        }else{
+            // value
+            v.setText(values[i/2]);
+            v.setTextSize(24);
+            v.setGravity(1);
+            v.setBackgroundColor(Color.WHITE);
+        }
+        v.setPadding(10,10,10,10);
+        return v;
     }
 }

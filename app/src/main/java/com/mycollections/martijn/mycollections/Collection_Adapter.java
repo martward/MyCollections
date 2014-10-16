@@ -31,6 +31,7 @@ public class Collection_Adapter extends BaseAdapter {
                 ArrayList<String> values = db.get_values(items.get(i));
                 itemValues[i] = values.toArray(new String[values.size()]);
             }
+            db.close();
         }
 
     }

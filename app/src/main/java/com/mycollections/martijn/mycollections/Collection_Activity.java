@@ -32,8 +32,6 @@ public class Collection_Activity extends ActionBarActivity {
         Intent intent = getIntent();
         collectionName = intent.getStringExtra("collectionName");
 
-        SharedPreferences collectionPrefs = getSharedPreferences(collectionName, MODE_PRIVATE);
-
         TextView title = (TextView) findViewById(R.id.collectionTitle);
         String name;
         if(collectionName.contains("_spc")){
@@ -42,11 +40,11 @@ public class Collection_Activity extends ActionBarActivity {
             name = collectionName;
         }
         title.setText(name);
+        context = title.getContext();
 
         GridView itemsView = (GridView) findViewById(R.id.collectionItems);
         itemsView.setVerticalSpacing(15);
         itemsView.setHorizontalSpacing(5);
-        context = itemsView.getContext();
 
         DBConnect db = new DBConnect(context, collectionName);
         allItems = db.get_items();

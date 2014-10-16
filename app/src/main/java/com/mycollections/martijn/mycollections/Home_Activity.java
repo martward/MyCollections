@@ -15,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
+import java.io.File;
+import java.io.FileFilter;
+
 
 public class Home_Activity extends ActionBarActivity {
 
@@ -44,7 +47,6 @@ public class Home_Activity extends ActionBarActivity {
 
         // create a GridView which will show the collections
         GridView homeView = (GridView)findViewById(R.id.homeView);
-        //homeView.setBackgroundColor(Color.BLACK);
         homeView.setVerticalSpacing(15);
         homeView.setHorizontalSpacing(10);
 
@@ -52,7 +54,9 @@ public class Home_Activity extends ActionBarActivity {
         adapter = new Home_Adapter(db_prefs, context, homeView.getWidth());
         homeView.setAdapter(adapter);
         homeView.setOnItemClickListener(respondToClick);
-        homeView.setOnItemLongClickListener(respondToHold);
+        if(numCollections > 0) {
+            homeView.setOnItemLongClickListener(respondToHold);
+        }
     }
 
     @Override
@@ -91,7 +95,7 @@ public class Home_Activity extends ActionBarActivity {
 
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            final String db = adapter.getItem(i).replace("_spc", "");
+            final String db = adapter.getItem(i).replace("_spc", " ");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setTitle("Delete collection " + db);
             builder1.setMessage("Ae you sure you wish to delete this collection?");
@@ -102,7 +106,8 @@ public class Home_Activity extends ActionBarActivity {
                             // Delete collection
                             context.deleteDatabase(db);
                             // Delete SharedPreferences
-                            context.deleteFile(db + ".xml");
+
+
                             // Delete from DB SharedPreferences & numCollections -=1
                             SharedPreferences db_prefs = getSharedPreferences("DB", MODE_PRIVATE);
                             numCollections -= 1;

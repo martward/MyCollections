@@ -38,7 +38,7 @@ public class DBConnect extends SQLiteOpenHelper {
         String createTable = "create table " + tableName + " (" ;
         for(int i = 0; i<allFeatures.length;i+=2){
             String type;
-            if ( allFeatures[i+1]== "Number"){
+            if ( allFeatures[i+1].equalsIgnoreCase("Number")){
                 type = "integer";
             }else {
                 type = "text";
@@ -47,6 +47,7 @@ public class DBConnect extends SQLiteOpenHelper {
         }
         createTable = createTable.substring(0,createTable.length()-2);
         createTable = createTable + ");";
+        System.out.println(createTable);
         db.execSQL(createTable);
     }
 
@@ -58,8 +59,11 @@ public class DBConnect extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             while(cursor.moveToNext()){
                 items.add(cursor.getString(0));
+                //System.out.println(cursor.getString(1));
+                //System.out.println(cursor.getString(2));
             }
         }
+        cursor.close();
         return items;
     }
 
@@ -67,18 +71,9 @@ public class DBConnect extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insert_row(String[] featuresAndValues){
-        System.out.println(featuresAndValues.length);
-        String[] features = new String[featuresAndValues.length/2];
-        String[] values = new String[featuresAndValues.length/2];
-        for(int i=0; i<featuresAndValues.length; i+=2){
-            if(i == 0) {
-                features[i] = featuresAndValues[i];
-                values[i] = featuresAndValues[i + 1];
-            } else{
-                features[i/2] = featuresAndValues[i];
-                values[i/2] = featuresAndValues[i + 1];
-            }
+    public void insert_row(String[] features, String[] values){
+        for(int i = 0; i < features.length; i++){
+            System.out.println(features[i] + ": " + values[i]);
         }
         String query = "INSERT INTO "+ tableName + " (";
         for(int j = 0; j < features.length; j++){
@@ -95,30 +90,59 @@ public class DBConnect extends SQLiteOpenHelper {
             }
         }
         query = query + ");";
+        System.out.println(query);
 
         db.execSQL(query);
     }
 
     public ArrayList<String> get_values(String item){
         ArrayList<String> values = new ArrayList<String>();
-        String query = "SELECT * FROM " + tableName + " WHERE Name = '" + item + "'";
-        Cursor c = db.rawQuery(query, null);
-        if(c.moveToFirst()){
-            for(int i=0; i<3;i++){
-                if(c.getString(i) != null){
-                    values.add(c.getString(i));
-                }else{
-                    System.out.println("Int");
-                    values.add(Integer.toString(c.getInt(i)));
-                }
-            }
+        String query = "SELECT * FROM " + tableName + " WHERE Name = ?";
+        Cursor c = db.rawQuery(query,new String[] {item});
+
+        c.moveToFirst();
+
+        System.out.println(c.getString(0));
+        System.out.println(c.getString(1));
+        System.out.println(c.getString(2));
+
+        c.moveToFirst();
+
+        do{
+            System.out.println(c.getPosition());
+            values.add(c.getString(c.getPosition()));
+        }while(c.moveToNext());
+        // WTF????
+        if(c.getString(c.getPosition()) != null){
+            values.add(c.getString(c.getPosition()));
+        }else{
+            System.out.println("...");
+            values.add(Integer.toString(c.getInt(c.getPosition())));
         }
+
+        c.close();
         return values;
+
     }
 
     public void delete_item(String item){
-        String query = "DELETE FROM " + tableName + " WHERE Name = '" + item + "'";
-        db.execSQL(query);
+        String query = "DELETE FROM " + tableName + " WHERE Name = ?";
+        db.execSQL(query, new String[] {item});
     }
 
+    public String[] get_feature_names(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName, null);
+        return cursor.getColumnNames();
+    }
+
+    public String[] get_feature_types(){
+        ArrayList<String> types = new ArrayList<String>();
+        Cursor c = db.rawQuery("PRAGMA table_info(" + tableName + ")",null);
+        c.moveToFirst();
+        do{
+            types.add(c.getString(2));
+            //System.out.println(c.getString(1));
+        } while(c.moveToNext());
+        return types.toArray(new String[types.size()]);
+    }
 }

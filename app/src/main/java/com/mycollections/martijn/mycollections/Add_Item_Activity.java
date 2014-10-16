@@ -17,7 +17,6 @@ public class Add_Item_Activity extends ActionBarActivity {
     private static String[] allFeatures;
     private static String collectionName;
     private static Context context;
-    private static String features;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +25,14 @@ public class Add_Item_Activity extends ActionBarActivity {
         Intent intent = getIntent();
         collectionName = intent.getStringExtra("collectionName");
 
-        SharedPreferences collectionPrefs = getSharedPreferences(collectionName, MODE_PRIVATE);
-        features = collectionPrefs.getString("features", "");
 
-        allFeatures = features.split(",");
 
         GridView addItemView = (GridView) findViewById(R.id.addItemView);
         context = addItemView.getContext();
-        adapter = new Add_Item_Adapter(context, features);
+        adapter = new Add_Item_Adapter(context, collectionName);
         addItemView.setAdapter(adapter);
 
-
+        get_features();
 
         if(savedInstanceState!= null){
             for(int i=0; i<allFeatures.length;i+=2){
@@ -62,20 +58,17 @@ public class Add_Item_Activity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_item) {
-            String[] featuresAndValues = new String[allFeatures.length];
-            for(int i = 0; i < allFeatures.length; i++){
-                if(i%2 == 0){
-                    featuresAndValues[i] = allFeatures[i];
+            String[] featuresAndValues = new String[allFeatures.length*2];
+            String[] values = new String[allFeatures.length];
+            for(int j = 0; j < allFeatures.length; j++){
+                if(adapter.get_value(j) != null) {
+                    values[j] = adapter.get_value(j);
                 }else{
-                    if(adapter.get_value(i/2) != null) {
-                        featuresAndValues[i] = adapter.get_value(i/2);
-                    }else{
-                        featuresAndValues[i] = "";
-                    }
+                    values[j] = "";
                 }
             }
             DBConnect db = new DBConnect(context, collectionName);
-            db.insert_row(featuresAndValues);
+            db.insert_row(allFeatures, values);
             db.close();
             Intent back = new Intent(context, Collection_Activity.class);
             back.putExtra("collectionName", collectionName);
@@ -91,5 +84,11 @@ public class Add_Item_Activity extends ActionBarActivity {
             String id = Integer.toString(i);
             savedInstanceState.putString(id, adapter.get_value(i/2));
         }
+    }
+
+    private static void get_features(){
+        DBConnect db = new DBConnect(context, collectionName);
+        allFeatures = db.get_feature_names();
+        db.close();
     }
 }

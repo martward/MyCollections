@@ -2,6 +2,7 @@ package com.mycollections.martijn.mycollections;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,8 @@ public class Item_Activity extends ActionBarActivity {
 
         TextView itemName = (TextView)findViewById(R.id.itemName);
         itemName.setText(item);
+        itemName.setTextSize(36);
+        itemName.setPadding(15,15,15,15);
 
         GridView itemFeatures = (GridView) findViewById(R.id.itemFeatures);
         itemFeatures.setVerticalSpacing(20);
@@ -35,10 +38,11 @@ public class Item_Activity extends ActionBarActivity {
 
         DBConnect db = new DBConnect(context, collectionName);
         ArrayList<String> values = db.get_values(item);
+        String[] features = db.get_feature_names();
         db.close();
 
-        Item_Adapter adapter = new Item_Adapter(context, values);
-
+        Item_Adapter adapter = new Item_Adapter(context, values, features);
+        itemFeatures.setAdapter(adapter);
 
     }
 
