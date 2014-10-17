@@ -26,7 +26,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
     private static Context context;
     private static String collectionName;
     private static ArrayList<String> attributes;
-    private static String attrStyle;
+    private static String attrType;
     private static EditText editText;
 
     @Override
@@ -99,10 +99,10 @@ public class Create_Collection_Activity extends ActionBarActivity {
     public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            attrStyle = parent.getItemAtPosition(pos).toString();
+            attrType = parent.getItemAtPosition(pos).toString();
         }
         public void onNothingSelected(AdapterView<?> parent) {
-            attrStyle = "Text";
+            attrType = "Text";
         }
     }
 
@@ -113,47 +113,47 @@ public class Create_Collection_Activity extends ActionBarActivity {
             switch (view.getId()) {
                 case R.id.buttonFinishCollection:
                     create_collection(attrName);
-
                     // go back to home menu
                     Intent homeIntent = new Intent(context, Home_Activity.class);
+                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(homeIntent);
                     finish();
                     break;
                 case R.id.buttonNextAttribute:
                     if (first) {
-                        // only a name is entered, only proceed when the name is at least one
-                        // character long
+                        /*
+                        Adding the title of the collection
+                         */
                         if (attrName.length() > 0 && !attrName.equalsIgnoreCase("name")) {
                             if(attrName.contains(" ")){
                                 attrName = attrName.replace(" ", "_spc");
                             }
-                            Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
-                            nextAttribute.putExtra("collectionName", attrName);
-                            nextAttribute.putStringArrayListExtra("attributes", attributes);
-                            startActivity(nextAttribute);
-                            finish();
+                            collectionName = attrName;
+                            System.out.println(collectionName);
+                            next();
                         }else if(attrName.length() > 0 && attrName.equalsIgnoreCase("name")) {
                             show_toast("Name feature is already added.");
                         }else {
-                            Toast toast = Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT);
-                            toast.show();
+                            show_toast("Please enter a name");
                         }
                     } else {
-                        if (attrName.length() > 0 && attrStyle != null) {
-                            // add name and type to attributes list before starting new intent
-                            if(attrName.contains(" ")){
-                                attrName = attrName.replace(" ", "_spc");
+                        /*
+                        Adding an attribute of the collection
+                         */
+                        if (attrName.length() > 0) {
+                            if (!attrName.equalsIgnoreCase("name")) {
+                                // add name and type to attributes list before starting new intent
+                                if (attrName.contains(" ")) {
+                                    attrName = attrName.replace(" ", "_spc");
+                                }
+                                attributes.add(attrName);
+                                attributes.add(attrType);
+                                next();
+                            } else{
+                                show_toast("Name feature is already added.");
                             }
-                            attributes.add(attrName);
-                            attributes.add(attrStyle);
-                            Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
-                            nextAttribute.putExtra("collectionName", collectionName);
-                            nextAttribute.putStringArrayListExtra("attributes", attributes);
-                            startActivity(nextAttribute);
-                            finish();
                         } else {
-                            Toast toast = Toast.makeText(context, "Please enter a name and a type", Toast.LENGTH_SHORT);
-                            toast.show();
+                            show_toast("Please enter a name and a type");
                         }
                     }
             }
@@ -161,12 +161,37 @@ public class Create_Collection_Activity extends ActionBarActivity {
     };
 
     private void create_collection(String attrName){
+        // make a string of all attributes and their types
+        String allAttributes = create_attribute_list(attrName);
+
+        // create table
+        DBConnect db = new DBConnect(context, collectionName);
+        db.create_table(allAttributes);
+        db.close();
+
+        // add 1 to number of collections in sharedPreferences
+        DB_List db_list = new DB_List(context);
+        db_list.add_collections(collectionName);
+    }
+
+    /*
+    Shows a toast with a given text
+     */
+    private void show_toast(CharSequence text){
+        Toast toast = Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    /*
+    Creates a string made up of the features and their types
+     */
+    private String create_attribute_list(String attrName){
         // updating features
         if(attrName.contains(" ")){
             attrName = attrName.replace(" ", "_spc");
         }
         attributes.add(attrName);
-        attributes.add(attrStyle);
+        attributes.add(attrType);
 
         String allAttributes = "";
         for(String s:attributes){
@@ -175,34 +200,25 @@ public class Create_Collection_Activity extends ActionBarActivity {
         }
         // make sure format is ok
         allAttributes = allAttributes.substring(0,allAttributes.length()-1);
-        System.out.println(allAttributes);
-
-        // open db
-        DBConnect db = new DBConnect(context, collectionName);
-        db.create_table(allAttributes);
-        db.close();
-
-        // add 1 to number of collections in sharedPreferences
-        SharedPreferences pref = getSharedPreferences("DB", MODE_PRIVATE);
-        SharedPreferences.Editor edit = pref.edit();
-        int numC = pref.getInt("numCollections", 0);
-        numC += 1;
-        edit.putInt("numCollections", numC);
-
-
-        // add name of collection to list of collections
-        String collections = pref.getString("collections","");
-        if(collections.length() > 0) {
-            collections = collections + ",";
-        }
-        collections = collections + collectionName;
-        edit.putString("collections", collections);
-
-        edit.commit();
+        return allAttributes;
     }
 
-    private void show_toast(CharSequence text){
-        Toast toast = Toast.makeText(this.getBaseContext(), text, Toast.LENGTH_SHORT);
-        toast.show();
+    /*
+    Opens a new activity to add a feature
+     */
+    public void next(){
+        Intent nextAttribute = new Intent(context, Create_Collection_Activity.class);
+        nextAttribute.putExtra("collectionName", collectionName);
+        nextAttribute.putStringArrayListExtra("attributes", attributes);
+        startActivity(nextAttribute);
+        finish();
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent back = new Intent(context, Home_Activity.class);
+        startActivity(back);
+        finish();
+    }
+
 }

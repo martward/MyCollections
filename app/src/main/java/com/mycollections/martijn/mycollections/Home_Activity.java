@@ -54,6 +54,7 @@ public class Home_Activity extends ActionBarActivity {
         adapter = new Home_Adapter(db_prefs, context, homeView.getWidth());
         homeView.setAdapter(adapter);
         homeView.setOnItemClickListener(respondToClick);
+
         if(numCollections > 0) {
             homeView.setOnItemLongClickListener(respondToHold);
         }
@@ -76,6 +77,7 @@ public class Home_Activity extends ActionBarActivity {
         if (id == R.id.action_add_collection){
             Intent createCollection = new Intent(context, Create_Collection_Activity.class);
             startActivity(createCollection);
+			finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -88,9 +90,14 @@ public class Home_Activity extends ActionBarActivity {
             Intent collectionIntent = new Intent(context, Collection_Activity.class);
             collectionIntent.putExtra("collectionName", db);
             startActivity(collectionIntent);
+			finish();
         }
     };
 
+    /*
+    This function displays an alert when the user longpresses a collection,
+    and then asks if he wishes to delete it.
+     */
     public AdapterView.OnItemLongClickListener respondToHold = new AdapterView.OnItemLongClickListener(){
 
         @Override
@@ -106,16 +113,8 @@ public class Home_Activity extends ActionBarActivity {
                             // Delete collection
                             context.deleteDatabase(db);
                             // Delete SharedPreferences
-
-
-                            // Delete from DB SharedPreferences & numCollections -=1
-                            SharedPreferences db_prefs = getSharedPreferences("DB", MODE_PRIVATE);
-                            numCollections -= 1;
-                            collections = collections.replace(db,"");
-                            SharedPreferences.Editor edit = db_prefs.edit();
-                            edit.putString("collections", collections);
-                            edit.putInt("numCollections", numCollections);
-                            edit.commit();
+                            DB_List db_list = new DB_List(context);
+                            db_list.delete_collection(db);
                             // Restart home activity
                             Intent restart = new Intent(context, Home_Activity.class);
                             startActivity(restart);

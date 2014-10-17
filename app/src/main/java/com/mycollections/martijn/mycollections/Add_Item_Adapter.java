@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Add_Item_Adapter extends BaseAdapter {
 
@@ -25,11 +26,17 @@ public class Add_Item_Adapter extends BaseAdapter {
         DBConnect db = new DBConnect(context, collectionName);
         features = db.get_feature_names();
         types = db.get_feature_types();
+        System.out.println(features.length);
+        System.out.println(types.length);
         db.close();
 
         create_edits();
     }
 
+    /*
+    This function creates all edit fields, so the don't get cleared when the adapter
+    is updated
+     */
     private void create_edits() {
         ArrayList<EditText> edit = new ArrayList<EditText>();
         int id = 0;
@@ -52,7 +59,7 @@ public class Add_Item_Adapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return features.length * 2;
+        return (features.length * 2);
     }
 
     @Override
@@ -65,6 +72,10 @@ public class Add_Item_Adapter extends BaseAdapter {
         return 0;
     }
 
+    /*
+    This field either returns a textview with the feature name
+    or am edittext, depending on the position
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(i % 2 == 0){
@@ -82,10 +93,16 @@ public class Add_Item_Adapter extends BaseAdapter {
         }
     }
 
+    /*
+    Gets a value from an edittext
+     */
     public String get_value(int pos){
         return allEditFields.get(pos).getText().toString();
     }
 
+    /*
+    Sets the value of an edittext
+     */
     public void set_value(int pos, String value){
         allEditFields.get(pos/2).setText(value);
     }

@@ -20,5 +20,6 @@
     <string name="title_activity_collection_">Collection_Activity</string>
     <string name="title_activity_add__item_">Add_Item_Activity</string>
     <string name="title_activity_item_">Item_Activity</string>
+    <string name="title_activity_edit__item_">Edit_Item_Activity</string>
 
 </resources>

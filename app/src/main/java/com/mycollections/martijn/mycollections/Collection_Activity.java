@@ -85,18 +85,23 @@ public class Collection_Activity extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            String item = adapter.getItem(i);
+            Item item = adapter.getItem(i);
             Intent itemIntent = new Intent(context, Item_Activity.class);
             itemIntent.putExtra("collectionName", collectionName);
-            itemIntent.putExtra("item", item);
+            itemIntent.putExtra("item", item.get_id());
             startActivity(itemIntent);
+            finish();
         }
     };
 
+    /*
+    This function creates a dialog that asks the user if he wants to delete the item
+     */
     public AdapterView.OnItemLongClickListener respondToHold = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            final String item = adapter.getItem(i).replace("_spc", "");
+            final String item = adapter.getItem(i).get_name().replace("_spc", "");
+            final int itemId = adapter.getItem(i).get_id();
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setTitle("Delete " + item);
             builder1.setMessage("Ae you sure you wish to delete this item?");
@@ -106,7 +111,7 @@ public class Collection_Activity extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // Delete item from db
                             DBConnect db = new DBConnect(context, collectionName);
-                            db.delete_item(item);
+                            db.delete_item(itemId);
                             db.close();
                             // Restart activity
                             Intent collectionIntent = new Intent(context, Collection_Activity.class);
@@ -128,4 +133,11 @@ public class Collection_Activity extends ActionBarActivity {
             return true;
         }
     };
+
+    @Override
+    public void onBackPressed(){
+        Intent back = new Intent(context, Home_Activity.class);
+        startActivity(back);
+        finish();
+    }
 }

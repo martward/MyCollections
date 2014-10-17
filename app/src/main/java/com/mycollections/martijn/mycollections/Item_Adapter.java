@@ -19,19 +19,20 @@ public class Item_Adapter extends BaseAdapter {
     private static String[] values;
     private static Context context;
     private static String[] features;
+    private Item item;
 
-    Item_Adapter(Context c, ArrayList<String> v, String[] f){
-        numFeatures = v.size();
-        System.out.println(v.size());
-        values = v.toArray(new String[v.size()]);
+    Item_Adapter(Item it,Context c){
         context = c;
-        features = f;
-        System.out.println(f.length);
+        item = it;
+        features = item.get_features();
+        numFeatures = features.length;
+        values = item.get_values();
     }
 
     @Override
     public int getCount() {
-        return (numFeatures * 2) -2;
+        // -1 because we don't want to show the name in the gridview
+        return (numFeatures-1)*2;
     }
 
     @Override

@@ -22,13 +22,14 @@ Almost evere activity will also need an adapter, further classes will not be nec
 
 Features:
   - Multiple databases/collections
-  - Fields can contain text, numbers and dates
-  - Objects are ordened by name.
+  - Fields can contain text, numbers 
+  - User can edit an item
 
 
 Optional features:
   - Export .CSV to Google Drive / SD card / Dropbox
   - Field can be declared as a choice menu (so the user can choose between pre defined values)
+  - Field can be declared as a date
   - User can find an object by name
   - User can find list of object which satisfy a certain criteria
   - User can choose to sort objects by a certain feature

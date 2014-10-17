@@ -16,38 +16,47 @@ import java.util.ArrayList;
 public class Collection_Adapter extends BaseAdapter {
 
     private static Context context;
-    private static ArrayList<String> items;
-    private static String[][] itemValues;
+    private static int numItems;
+    private static Item[] items;
 
     Collection_Adapter(Context con, ArrayList<String> allItems, String collectionName){
         context = con;
-        items = allItems;
+        numItems = allItems.size();
 
-
-        if(items.size() > 0){
-            itemValues = new String[items.size()][];
+        items = new Item[numItems];
+        if(allItems.size() > 0){
             DBConnect db = new DBConnect(context, collectionName);
-            for(int i=0; i<items.size(); i++){
-                ArrayList<String> values = db.get_values(items.get(i));
-                itemValues[i] = values.toArray(new String[values.size()]);
+            String[] features = db.get_feature_names();
+            for(int i=0; i<numItems; i++){
+                int id = Integer.parseInt(allItems.get(i));
+                System.out.println(i + " " + id);
+                String[] values = db.get_values(id).toArray(new String[features.length]);
+                System.out.println(i + " " + id);
+                Item item = new Item(id, features, values);
+                System.out.println(i + " " + id);
+                items[i] = item;
+                System.out.println(i + " " + items[i].get_id());
+                System.out.println("---------");
             }
             db.close();
+            for(int j = 0; j < numItems; j++){
+                System.out.println( j + " " + items[j].get_id());
+            }
         }
-
     }
 
     @Override
     public int getCount() {
-        if(items.size() == 0){
+        if(numItems == 0){
             return 1;
         }else {
-            return items.size();
+            return items.length;
         }
     }
 
     @Override
-    public String getItem(int i) {
-        return items.get(i);
+    public Item getItem(int i) {
+        return items[i];
     }
 
     @Override
@@ -57,7 +66,8 @@ public class Collection_Adapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        if(items.size() == 0 & i == 0){
+        if(numItems == 0 & i == 0){
+            // if no items are present
             TextView noItems = new TextView(context);
             noItems.setText("No items found");
             noItems.setTextSize(30);
@@ -65,11 +75,16 @@ public class Collection_Adapter extends BaseAdapter {
             noItems.setPadding(10,10,10,10);
             return noItems;
         }else {
+
+            // System.out.println(items.get(i).get_id());
+
+            // creating the row to be shown
             LinearLayout row = new LinearLayout(context);
 
+            // creating letter next to the name of the collection
             TextView letter = new TextView(context);
             letter.setTextSize(52);
-            String substring = items.get(i).substring(0, 1);
+            String substring = items[i].get_name().substring(0, 1);
             letter.setText(substring.toUpperCase());
             letter.setTextColor(Color.RED);
             letter.setBackgroundColor(Color.rgb(153,217,234));
@@ -77,29 +92,35 @@ public class Collection_Adapter extends BaseAdapter {
                     LinearLayout.LayoutParams.FILL_PARENT, (float) 1));
             letter.setGravity(1);
 
+            // creating textview with the name of the item
             TextView item = new TextView(context);
-            String it = items.get(i);
+            String it = items[i].get_name();
             if(it.contains("_spc")){
                 it = it.replace("_spc", "");
             }
 
+            // linearlayout with the name of the item and a preview of it's values
             LinearLayout textRow = new LinearLayout(context);
 
             item.setText(it);
             item.setTextSize(30);
             item.setBackgroundColor(Color.WHITE);
 
+            // creating textview with up to three values of features of the item
             TextView values = new TextView(context);
-            if(itemValues[i].length > 0){
+            if(items[i].get_values().length > 0){
                 String str = "\t";
-                for(int j=1; j < itemValues[i].length; j++){
+                for(int j=1; j < items[i].get_values().length; j++){
                     if(j < 3) {
-                        str = str + itemValues[i][j];
+                        str = str + items[i].get_values()[j];
+                        //System.out.println(str);
                         if(j < 2) {
                             str = str + ", ";
                         }
                     }
                 }
+                // delete last comma and space
+                str = str.substring(0, str.length());
                 values.setText(str);
             }else {
                 values.setText("No values found");
@@ -117,6 +138,7 @@ public class Collection_Adapter extends BaseAdapter {
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setPadding(0, 5, 5, 10);
 
+            // add everything to the row
             row.addView(letter);
             row.addView(textRow);
             return row;

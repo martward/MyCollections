@@ -60,7 +60,7 @@ public class Home_Adapter extends BaseAdapter {
         }else {
             LinearLayout li = new LinearLayout(context);
 
-
+            // creating textview with startin letter of collection
             TextView letter = new TextView(context);
             letter.setTextSize(48);
             String substring = allCollections[i].substring(0, 1);
@@ -71,7 +71,7 @@ public class Home_Adapter extends BaseAdapter {
                     LinearLayout.LayoutParams.FILL_PARENT, (float) 1.0));
             letter.setGravity(1);
 
-
+            // creating textview that shows the collection name
             TextView someCollections = new TextView(context);
             if (allCollections[i].contains("_spc")) {
                 String c = allCollections[i].replace("_spc", " ");
@@ -89,6 +89,7 @@ public class Home_Adapter extends BaseAdapter {
             li.setOrientation(LinearLayout.HORIZONTAL);
             li.setPadding(5, 5, 5, 10);
 
+            // adding views to linear layout
             li.addView(letter);
             li.addView(someCollections);
 

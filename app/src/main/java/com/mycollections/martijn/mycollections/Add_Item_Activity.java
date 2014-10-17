@@ -25,8 +25,6 @@ public class Add_Item_Activity extends ActionBarActivity {
         Intent intent = getIntent();
         collectionName = intent.getStringExtra("collectionName");
 
-
-
         GridView addItemView = (GridView) findViewById(R.id.addItemView);
         context = addItemView.getContext();
         adapter = new Add_Item_Adapter(context, collectionName);
@@ -34,6 +32,7 @@ public class Add_Item_Activity extends ActionBarActivity {
 
         get_features();
 
+        // loading values of features when app was paused (used when changing orientation
         if(savedInstanceState!= null){
             for(int i=0; i<allFeatures.length;i+=2){
                 adapter.set_value(i, savedInstanceState.getString(String.valueOf(i)));
@@ -58,7 +57,6 @@ public class Add_Item_Activity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_save_item) {
-            String[] featuresAndValues = new String[allFeatures.length*2];
             String[] values = new String[allFeatures.length];
             for(int j = 0; j < allFeatures.length; j++){
                 if(adapter.get_value(j) != null) {
@@ -70,16 +68,17 @@ public class Add_Item_Activity extends ActionBarActivity {
             DBConnect db = new DBConnect(context, collectionName);
             db.insert_row(allFeatures, values);
             db.close();
-            /*
             Intent back = new Intent(context, Collection_Activity.class);
             back.putExtra("collectionName", collectionName);
             startActivity(back);
             finish();
-            */
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    Saving all values in case app is paused (used when changing orientation)
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         for(int i = 0; i < allFeatures.length; i+=2){
@@ -88,9 +87,20 @@ public class Add_Item_Activity extends ActionBarActivity {
         }
     }
 
+    /*
+    Getting a list of all features of a collection
+     */
     private static void get_features(){
         DBConnect db = new DBConnect(context, collectionName);
         allFeatures = db.get_feature_names();
         db.close();
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent back = new Intent(context, Collection_Activity.class);
+        back.putExtra("collectionName", collectionName);
+        startActivity(back);
+        finish();
     }
 }
