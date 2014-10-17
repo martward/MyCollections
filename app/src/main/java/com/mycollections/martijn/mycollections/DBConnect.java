@@ -100,26 +100,12 @@ public class DBConnect extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + tableName + " WHERE Name = ?";
         Cursor c = db.rawQuery(query,new String[] {item});
 
-        c.moveToFirst();
 
-        System.out.println(c.getString(0));
-        System.out.println(c.getString(1));
-        System.out.println(c.getString(2));
-
-        c.moveToFirst();
-
-        do{
-            System.out.println(c.getPosition());
-            values.add(c.getString(c.getPosition()));
-        }while(c.moveToNext());
-        // WTF????
-        if(c.getString(c.getPosition()) != null){
-            values.add(c.getString(c.getPosition()));
-        }else{
-            System.out.println("...");
-            values.add(Integer.toString(c.getInt(c.getPosition())));
+        int numF = get_feature_names().length;
+        for (int i=0; i<numF; i++) {
+            System.out.println(c.getString(i));
+            values.add(c.getString(i));
         }
-
         c.close();
         return values;
 

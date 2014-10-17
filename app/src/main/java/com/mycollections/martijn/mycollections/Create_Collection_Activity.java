@@ -113,7 +113,11 @@ public class Create_Collection_Activity extends ActionBarActivity {
             switch (view.getId()) {
                 case R.id.buttonFinishCollection:
                     create_collection(attrName);
-                    System.out.println(attrName);
+
+                    // go back to home menu
+                    Intent homeIntent = new Intent(context, Home_Activity.class);
+                    startActivity(homeIntent);
+                    finish();
                     break;
                 case R.id.buttonNextAttribute:
                     if (first) {
@@ -172,6 +176,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
         // make sure format is ok
         allAttributes = allAttributes.substring(0,allAttributes.length()-1);
         System.out.println(allAttributes);
+
         // open db
         DBConnect db = new DBConnect(context, collectionName);
         db.create_table(allAttributes);
@@ -194,11 +199,6 @@ public class Create_Collection_Activity extends ActionBarActivity {
         edit.putString("collections", collections);
 
         edit.commit();
-
-        // go back to home menu
-        Intent homeIntent = new Intent(context, Home_Activity.class);
-        startActivity(homeIntent);
-        finish();
     }
 
     private void show_toast(CharSequence text){

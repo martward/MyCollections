@@ -70,10 +70,12 @@ public class Add_Item_Activity extends ActionBarActivity {
             DBConnect db = new DBConnect(context, collectionName);
             db.insert_row(allFeatures, values);
             db.close();
+            /*
             Intent back = new Intent(context, Collection_Activity.class);
             back.putExtra("collectionName", collectionName);
             startActivity(back);
             finish();
+            */
         }
         return super.onOptionsItemSelected(item);
     }
