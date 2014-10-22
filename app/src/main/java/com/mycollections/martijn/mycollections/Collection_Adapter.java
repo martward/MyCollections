@@ -103,7 +103,7 @@ public class Collection_Adapter extends BaseAdapter {
                 for(int j=1; j < items[i].get_values().length; j++){
                     if(j < 3) {
                         str = str + items[i].get_values()[j];
-                        if(j < 2) {
+                        if(j < items[i].get_values().length - 1) {
                             str = str + ", ";
                         }
                     }
