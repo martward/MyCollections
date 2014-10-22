@@ -127,7 +127,6 @@ public class Create_Collection_Activity extends ActionBarActivity {
                             // check if collection already exists
                             if(!collections.contains(attrName)) {
                                 collectionName = attrName;
-                                System.out.println(collectionName);
                                 next();
                             }else{
                                 show_toast("This collections already exists");

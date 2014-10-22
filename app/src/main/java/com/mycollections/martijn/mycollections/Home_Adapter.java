@@ -25,7 +25,6 @@ public class Home_Adapter extends BaseAdapter {
         numCollections = prefs.getInt("numCollections", 0);
         if(numCollections > 0) {
             String collections = prefs.getString("collections", "");
-            System.out.println(collections);
             allCollections = collections.split(",");
         }
         context = con;

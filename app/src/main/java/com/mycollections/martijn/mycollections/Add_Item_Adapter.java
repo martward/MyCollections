@@ -27,8 +27,6 @@ public class Add_Item_Adapter extends BaseAdapter {
         DBConnect db = new DBConnect(context, collectionName);
         features = db.get_feature_names();
         types = db.get_feature_types();
-        System.out.println(features.length);
-        System.out.println(types.length);
         db.close();
 
         create_edits();
@@ -43,16 +41,15 @@ public class Add_Item_Adapter extends BaseAdapter {
         int id = 0;
         for(int i = 0; i < (types.length); i++){
             EditText text = new EditText(context);
-            text.setId(id);
-            text.setSingleLine();
-            text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             text.setTextColor(Color.BLACK);
+            text.setId(id);
+            text.setCursorVisible(true);
+            text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             text.setBackgroundColor(Color.WHITE);
             text.setTextSize(24);
             if(types[i].equalsIgnoreCase("integer")){
                 text.setKeyListener(new DigitsKeyListener());
             } else{
-                text.setSingleLine();
                 text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             }
             edit.add(text);

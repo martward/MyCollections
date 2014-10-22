@@ -67,9 +67,6 @@ public class Collection_Adapter extends BaseAdapter {
             noItems.setPadding(10,10,10,10);
             return noItems;
         }else {
-
-            // System.out.println(items.get(i).get_id());
-
             // creating the row to be shown
             LinearLayout row = new LinearLayout(context);
 
@@ -106,7 +103,6 @@ public class Collection_Adapter extends BaseAdapter {
                 for(int j=1; j < items[i].get_values().length; j++){
                     if(j < 3) {
                         str = str + items[i].get_values()[j];
-                        //System.out.println(str);
                         if(j < 2) {
                             str = str + ", ";
                         }

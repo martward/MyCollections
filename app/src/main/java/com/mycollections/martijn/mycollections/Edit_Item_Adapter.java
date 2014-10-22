@@ -43,7 +43,7 @@ public class Edit_Item_Adapter extends BaseAdapter {
         for (int i = 0; i < (types.length); i++) {
             EditText text = new EditText(context);
             text.setId(id);
-            text.setSingleLine();
+            text.setCursorVisible(true);
             text.setTextColor(Color.BLACK);
             text.setText(values[i]);
             text.setBackgroundColor(Color.WHITE);
@@ -52,7 +52,6 @@ public class Edit_Item_Adapter extends BaseAdapter {
             if (types[i].equalsIgnoreCase("integer")) {
                 text.setKeyListener(new DigitsKeyListener());
             } else {
-                text.setSingleLine();
                 text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
             }
             edit.add(text);

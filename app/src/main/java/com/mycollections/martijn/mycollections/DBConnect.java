@@ -51,7 +51,6 @@ public class DBConnect extends SQLiteOpenHelper {
         // deleting last comma and space
         createTable = createTable.substring(0,createTable.length()-2);
         createTable = createTable + ");";
-        System.out.println(createTable);
         db.execSQL(createTable);
     }
 

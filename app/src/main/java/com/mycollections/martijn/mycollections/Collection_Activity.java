@@ -42,7 +42,7 @@ public class Collection_Activity extends ActionBarActivity {
         }
         title.setText(name);
         title.setTextColor(Color.BLACK);
-        context = getBaseContext();
+        context = title.getContext();
 
         GridView itemsView = (GridView) findViewById(R.id.collectionItems);
         itemsView.setVerticalSpacing(15);

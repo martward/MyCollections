@@ -31,7 +31,6 @@ public class Export_Collection {
                 myDir.mkdir();
             }
             String filePath = myDir + "/" + fileName;
-            System.out.println(filePath);
             FileWriter writer = new FileWriter(filePath);
 
             // add column names
