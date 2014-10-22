@@ -104,10 +104,10 @@ public class Home_Activity extends ActionBarActivity {
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
             final String db = adapter.getItem(i).replace("_spc", " ");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-            builder1.setTitle("Delete collection " + db);
-            builder1.setMessage("Ae you sure you wish to delete this collection?");
+            builder1.setTitle("Collection " + db + " options");
+            builder1.setMessage("What do you wish to do with this collection?");
             builder1.setCancelable(true);
-            builder1.setPositiveButton("Yes",
+            builder1.setPositiveButton("Delete",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Delete collection
@@ -121,7 +121,7 @@ public class Home_Activity extends ActionBarActivity {
                             finish();
                         }
                     });
-            builder1.setNegativeButton("No",
+            builder1.setNegativeButton("Cnacel",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
