@@ -21,12 +21,11 @@ There will be six activities:
 
 Features:
   - Multiple databases/collections
-  - Fields can contain text, numbers and dates
-  - Objects are ordened by name.
+  - Fields can contain text, numbers
+  - Export .CSV
 
 
 Optional features:
-  - Export .CSV to Google Drive / SD card / Dropbox
   - Field can be declared as a choice menu (so the user can choose between pre defined values)
   - User can find an object by name
   - User can find list of object which satisfy a certain criteria
