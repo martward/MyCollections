@@ -32,7 +32,7 @@ public class Item_Adapter extends BaseAdapter {
     @Override
     public int getCount() {
         // -1 because we don't want to show the name in the gridview
-        return (numFeatures-1)*2;
+        return numFeatures * 2;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Item_Adapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         TextView v = new TextView(context);
-        i = i+2;
+        //i = i+2;
         if(i%2 == 0){
             // feature
             String feature;
@@ -66,6 +66,7 @@ public class Item_Adapter extends BaseAdapter {
             v.setGravity(1);
             v.setBackgroundColor(Color.WHITE);
         }
+        v.setTextColor(Color.BLACK);
         v.setPadding(10,10,10,10);
         return v;
     }

@@ -29,19 +29,11 @@ public class Collection_Adapter extends BaseAdapter {
             String[] features = db.get_feature_names();
             for(int i=0; i<numItems; i++){
                 int id = Integer.parseInt(allItems.get(i));
-                System.out.println(i + " " + id);
                 String[] values = db.get_values(id).toArray(new String[features.length]);
-                System.out.println(i + " " + id);
                 Item item = new Item(id, features, values);
-                System.out.println(i + " " + id);
                 items[i] = item;
-                System.out.println(i + " " + items[i].get_id());
-                System.out.println("---------");
             }
             db.close();
-            for(int j = 0; j < numItems; j++){
-                System.out.println( j + " " + items[j].get_id());
-            }
         }
     }
 
@@ -105,6 +97,7 @@ public class Collection_Adapter extends BaseAdapter {
             item.setText(it);
             item.setTextSize(30);
             item.setBackgroundColor(Color.WHITE);
+            item.setTextColor(Color.BLACK);
 
             // creating textview with up to three values of features of the item
             TextView values = new TextView(context);
@@ -122,6 +115,7 @@ public class Collection_Adapter extends BaseAdapter {
                 // delete last comma and space
                 str = str.substring(0, str.length());
                 values.setText(str);
+                values.setTextColor(Color.BLACK);
             }else {
                 values.setText("No values found");
             }

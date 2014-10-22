@@ -46,9 +46,6 @@ public class Create_Collection_Activity extends ActionBarActivity {
             spinner.setVisibility(View.GONE);
             // initialize attributes ArrayList
             attributes = new ArrayList<String>();
-            attributes.add("Name");
-            attributes.add("Text");
-            show_toast("Collection created, name feature added.");
             // used in the OnClickListener
             first = true;
         } else {
@@ -80,7 +77,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
         finish.setOnClickListener(buttonClick);
         next.setOnClickListener(buttonClick);
 
-        context = next.getContext();
+        context = getBaseContext();
 
     }
 
@@ -114,25 +111,27 @@ public class Create_Collection_Activity extends ActionBarActivity {
                 case R.id.buttonFinishCollection:
                     create_collection(attrName);
                     // go back to home menu
-                    Intent homeIntent = new Intent(context, Home_Activity.class);
-                    homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(homeIntent);
-                    finish();
+                    onBackPressed();
                     break;
                 case R.id.buttonNextAttribute:
                     if (first) {
                         /*
                         Adding the title of the collection
                          */
-                        if (attrName.length() > 0 && !attrName.equalsIgnoreCase("name")) {
+                        if (attrName.length() > 0) {
+                            DB_List db_list = new DB_List(context);
+                            String collections = db_list.get_collections();
                             if(attrName.contains(" ")){
                                 attrName = attrName.replace(" ", "_spc");
                             }
-                            collectionName = attrName;
-                            System.out.println(collectionName);
-                            next();
-                        }else if(attrName.length() > 0 && attrName.equalsIgnoreCase("name")) {
-                            show_toast("Name feature is already added.");
+                            // check if collection already exists
+                            if(!collections.contains(attrName)) {
+                                collectionName = attrName;
+                                System.out.println(collectionName);
+                                next();
+                            }else{
+                                show_toast("This collections already exists");
+                            }
                         }else {
                             show_toast("Please enter a name");
                         }
@@ -141,7 +140,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
                         Adding an attribute of the collection
                          */
                         if (attrName.length() > 0) {
-                            if (!attrName.equalsIgnoreCase("name")) {
+                            if (!attributes.contains(attrName)) {
                                 // add name and type to attributes list before starting new intent
                                 if (attrName.contains(" ")) {
                                     attrName = attrName.replace(" ", "_spc");
@@ -150,7 +149,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
                                 attributes.add(attrType);
                                 next();
                             } else{
-                                show_toast("Name feature is already added.");
+                                show_toast(attrName + " feature is already added.");
                             }
                         } else {
                             show_toast("Please enter a name and a type");
@@ -217,6 +216,7 @@ public class Create_Collection_Activity extends ActionBarActivity {
     @Override
     public void onBackPressed(){
         Intent back = new Intent(context, Home_Activity.class);
+        back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(back);
         finish();
     }

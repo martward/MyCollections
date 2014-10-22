@@ -26,7 +26,7 @@ public class Add_Item_Activity extends ActionBarActivity {
         collectionName = intent.getStringExtra("collectionName");
 
         GridView addItemView = (GridView) findViewById(R.id.addItemView);
-        context = addItemView.getContext();
+        context = getBaseContext();
         adapter = new Add_Item_Adapter(context, collectionName);
         addItemView.setAdapter(adapter);
 
@@ -62,16 +62,13 @@ public class Add_Item_Activity extends ActionBarActivity {
                 if(adapter.get_value(j) != null) {
                     values[j] = adapter.get_value(j);
                 }else{
-                    values[j] = "";
+                    values[j] = "Unknown";
                 }
             }
             DBConnect db = new DBConnect(context, collectionName);
             db.insert_row(allFeatures, values);
             db.close();
-            Intent back = new Intent(context, Collection_Activity.class);
-            back.putExtra("collectionName", collectionName);
-            startActivity(back);
-            finish();
+            onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }

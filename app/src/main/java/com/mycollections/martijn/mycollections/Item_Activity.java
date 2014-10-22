@@ -31,7 +31,7 @@ public class Item_Activity extends ActionBarActivity {
         GridView itemFeatures = (GridView) findViewById(R.id.itemFeatures);
         itemFeatures.setVerticalSpacing(20);
 
-        context = itemFeatures.getContext();
+        context = getBaseContext();
 
         DBConnect db = new DBConnect(context, collectionName);
         ArrayList<String> values = db.get_values(id);
@@ -62,14 +62,14 @@ public class Item_Activity extends ActionBarActivity {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem it) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = it.getItemId();
         if (id == R.id.action_edit_item) {
             Intent edit = new Intent(context, Edit_Item_Activity.class);
-            edit.putExtra("item", id);
+            edit.putExtra("item", item.get_id());
             edit.putExtra("collectionName", collectionName);
             startActivity(edit);
             finish();
@@ -78,16 +78,13 @@ public class Item_Activity extends ActionBarActivity {
         if (id == R.id.action_delete_item) {
             // delete item from db
             DBConnect db = new DBConnect(context, collectionName);
-            db.delete_item(id);
+            db.delete_item(item.get_id());
             db.close();
             // back to collection
-            Intent collectionIntent = new Intent(context, Collection_Activity.class);
-            collectionIntent.putExtra("collectionName", collectionName);
-            startActivity(collectionIntent);
-            finish();
+            onBackPressed();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(it);
     }
 
     @Override

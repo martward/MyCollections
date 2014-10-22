@@ -1,6 +1,7 @@
 package com.mycollections.martijn.mycollections;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
@@ -45,6 +46,9 @@ public class Add_Item_Adapter extends BaseAdapter {
             text.setId(id);
             text.setSingleLine();
             text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            text.setTextColor(Color.BLACK);
+            text.setBackgroundColor(Color.WHITE);
+            text.setTextSize(24);
             if(types[i].equalsIgnoreCase("integer")){
                 text.setKeyListener(new DigitsKeyListener());
             } else{
@@ -86,7 +90,8 @@ public class Add_Item_Adapter extends BaseAdapter {
             }else{
                 featureName.setText(features[i/2]);
             }
-            featureName.setTextSize(22);
+            featureName.setTextColor(Color.BLACK);
+            featureName.setTextSize(28);
             return featureName;
         } else{
             return allEditFields.get(i/2);

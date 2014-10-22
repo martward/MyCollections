@@ -111,7 +111,7 @@ public class Home_Activity extends ActionBarActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Delete collection
-                            context.deleteDatabase(db);
+                            getBaseContext().deleteDatabase(db);
                             // Delete SharedPreferences
                             DB_List db_list = new DB_List(context);
                             db_list.delete_collection(db);
@@ -125,6 +125,14 @@ public class Home_Activity extends ActionBarActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
+                        }
+                    });
+            builder1.setNeutralButton("Export",
+                    new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Export_Collection collectionExp = new Export_Collection(context,db);
+                            collectionExp.export();
                         }
                     });
 

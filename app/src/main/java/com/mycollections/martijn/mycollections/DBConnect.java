@@ -133,4 +133,13 @@ public class DBConnect extends SQLiteOpenHelper {
         } while(c.moveToNext());
         return types.toArray(new String[types.size()]);
     }
+
+    public void update_item(int id, String[] values){
+        String[] features = get_feature_names();
+        ContentValues cV = new ContentValues();
+        for(int i =0; i < features.length; i++){
+            cV.put(features[i], values[i]);
+        }
+        db.update(tableName, cV, "id = " + id, null);
+    }
 }

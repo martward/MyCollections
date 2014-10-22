@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -40,7 +41,8 @@ public class Collection_Activity extends ActionBarActivity {
             name = collectionName;
         }
         title.setText(name);
-        context = title.getContext();
+        title.setTextColor(Color.BLACK);
+        context = getBaseContext();
 
         GridView itemsView = (GridView) findViewById(R.id.collectionItems);
         itemsView.setVerticalSpacing(15);

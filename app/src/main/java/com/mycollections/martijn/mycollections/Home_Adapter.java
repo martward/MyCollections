@@ -25,6 +25,7 @@ public class Home_Adapter extends BaseAdapter {
         numCollections = prefs.getInt("numCollections", 0);
         if(numCollections > 0) {
             String collections = prefs.getString("collections", "");
+            System.out.println(collections);
             allCollections = collections.split(",");
         }
         context = con;
@@ -56,6 +57,7 @@ public class Home_Adapter extends BaseAdapter {
             TextView noCollections = new TextView(context);
             noCollections.setText("No databases found.");
             noCollections.setTextSize(30);
+            noCollections.setTextColor(Color.GRAY);
             return noCollections;
         }else {
             LinearLayout li = new LinearLayout(context);
@@ -82,6 +84,7 @@ public class Home_Adapter extends BaseAdapter {
             someCollections.setPadding(15, 20, 15, 15);
             someCollections.setTextSize(30);
             someCollections.setBackgroundColor(Color.WHITE);
+            someCollections.setTextColor(Color.BLACK);
             someCollections.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
                     LinearLayout.LayoutParams.FILL_PARENT, (float) 0.25));
 

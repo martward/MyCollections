@@ -15,11 +15,9 @@ public class Item {
         features = f;
         values = v;
         ID = id;
-        System.out.println(ID);
     }
 
     public int get_id(){
-        System.out.println("out " + ID);
        return ID;
     }
 

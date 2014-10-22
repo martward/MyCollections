@@ -8,9 +8,13 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.mycollections.martijn.mycollections.Edit_Item_Activity">
 
-    <TextView
-        android:text="@string/hello_world"
+    <GridView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/itemFeaturesEdit"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>

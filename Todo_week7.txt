@@ -1,2 +1,0 @@
-- Add ability to see values of an item
-- Fix that firts time an item is created in a colection it's not added

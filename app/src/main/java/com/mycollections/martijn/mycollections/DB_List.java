@@ -9,22 +9,25 @@ import android.content.SharedPreferences;
 public class DB_List {
 
     private static Context context;
+    private static SharedPreferences pref;
+    private String collections;
+    private int numCollections;
 
     public DB_List(Context c){
         context = c;
+        pref =  context.getSharedPreferences("DB", context.MODE_PRIVATE);
+        collections = pref.getString("collections", "");
+        numCollections = pref.getInt("numCollections", 0);
     }
 
     public void add_collections(String collectionName){
         // add 1 to number of collections in sharedPreferences
-        SharedPreferences pref = context.getSharedPreferences("DB", context.MODE_PRIVATE);
         SharedPreferences.Editor edit = pref.edit();
-        int numC = pref.getInt("numCollections", 0);
-        numC += 1;
-        edit.putInt("numCollections", numC);
+        numCollections += 1;
+        edit.putInt("numCollections", numCollections);
 
 
         // add name of collection to list of collections
-        String collections = pref.getString("collections","");
         if(collections.length() > 0) {
             collections = collections + ",";
         }
@@ -36,14 +39,15 @@ public class DB_List {
 
     public void delete_collection(String collectionName){
         // Delete from DB SharedPreferences & numCollections -=1
-        SharedPreferences db_prefs = context.getSharedPreferences("DB", context.MODE_PRIVATE);
-        int numCollections = db_prefs.getInt("numCollections", 1);
-        String collections = db_prefs.getString("collections", "");
         numCollections -= 1;
         collections = collections.replace(collectionName,"");
-        SharedPreferences.Editor edit = db_prefs.edit();
+        SharedPreferences.Editor edit = pref.edit();
         edit.putString("collections", collections);
         edit.putInt("numCollections", numCollections);
         edit.commit();
+    }
+
+    public String get_collections(){
+        return collections;
     }
 }
