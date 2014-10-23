@@ -121,7 +121,7 @@ public class Home_Activity extends ActionBarActivity {
                             finish();
                         }
                     });
-            builder1.setNegativeButton("Cnacel",
+            builder1.setNegativeButton("Cancel",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
